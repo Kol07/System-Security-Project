@@ -1,0 +1,225 @@
+{% extends "basestaff.html" %}
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Core</div>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Dashboard
+                </a>
+                <div class="sb-sidenav-menu-heading">Management</div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBuy"
+                    aria-expanded="false" aria-controls="collapseBuy">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Audit
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseBuy" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="/retrieveLogs">User Audit Activities</a>
+                        <a class="nav-link" href="/retrieveSystemLogs">System Audit Activites</a>
+                    </nav>
+                </div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRent"
+                    aria-expanded="false" aria-controls="collapseRent">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Renting
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseRent" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="layout-static.html">??</a>
+                        <a class="nav-link" href="layout-sidenav-light.html">??</a>
+                    </nav>
+                </div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVote"
+                    aria-expanded="false" aria-controls="collapseVote">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Voting
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseVote" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="/reviewSuggestion">Review Suggestion</a>
+                        <a class="nav-link" href="/reviewVoting">Review Voting Status</a>
+                    </nav>
+                </div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMember"
+                    aria-expanded="false" aria-controls="collapseMember">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Membership
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseMember" aria-labelledby="headingOne"
+                    data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="/retrieveUserAccount">Retrieve Customer Account</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            Admin
+        </div>
+    </nav>
+</div>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Dashboard</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 offset-xl-3">
+                <div class="card mb-4" style="width: 1100px; left: -20%;"> <!-- Set card width to 100% -->
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        Failed Login Attempts
+                    </div>
+                    <div class="card-body">
+                        <canvas id="failedLoginChart" width="500" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 offset-xl-3">
+                <div class="card mb-4" style="width: 1100px; left: -20%;"> <!-- Set card width to 100% -->
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        Successful Login Activity
+                    </div>
+                    <div class="card-body">
+                        <canvas id="successfulLoginChart" width="500" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var chartLabels = [
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            ];  // All months of the year
+
+            var chartValues = Array(chartLabels.length).fill(0);
+
+            {% for i in range(chart_labels | length) %}
+            var label = "{{ chart_labels[i] }}";
+            var value = {{ chart_values[i] }};
+            var index = chartLabels.indexOf(label.split(' ')[0]);  // Extract month from label
+            if (index !== -1) {
+                chartValues[index] = value;
+            }
+            {% endfor %}
+
+            var ctx = document.getElementById("failedLoginChart").getContext("2d");
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: "Failed Login Attempts",
+                        data: chartValues,
+                        fill: false,
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        lineTension: 0.1
+                    }],
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Failed Login Attempts'
+                            },
+                            gridLines: {
+                                display: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Month'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+
+        </script>
+        <script>
+            var allMonths = [
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            ];  // All months of the year
+        
+            var chartLabels = allMonths.map(function(month) {
+                return month + ' ' + new Date().getFullYear(); // Use the current year
+            });
+        
+            var chartValues = Array(chartLabels.length).fill(0);
+        
+            {% for i in range(successful_chart_labels|length) %}
+                var label = "{{ successful_chart_labels[i] }}";
+                var value = {{ successful_chart_values[i] }};
+                var index = chartLabels.indexOf(label);
+                if (index !== -1) {
+                    chartValues[index] = value;
+                }
+            {% endfor %}
+        
+            var ctx = document.getElementById("successfulLoginChart").getContext("2d");
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: "Successful Login Activity",
+                        data: chartValues,
+                        backgroundColor: "rgba(75, 192, 192, 0.5)", // Adjust color as needed
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }],
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Successful Login Activity'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Month'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        </script>
+
+
+        {% endblock %}

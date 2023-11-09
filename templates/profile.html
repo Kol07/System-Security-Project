@@ -1,0 +1,240 @@
+{% extends "baseinner.html" %}
+{% block title %}Baggage Ecommerce Category Bootstrap Responsive Web Template | Home :: W3layouts{% endblock %}
+
+{% block content %}
+<style>
+  .image-preview-container {
+      position: relative;
+      width: 100%;
+      max-width: 150px; /* Adjust this width as needed */
+      margin: 0 auto;
+  }
+
+  .image-preview-container img {
+      max-width: 100%;
+      height: auto;
+  }
+
+  #preview-selected-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+  }
+    /* Styles for image container */
+  .image-container {
+      position: relative;
+      overflow: hidden;
+  }
+
+  /* Styles for preview images */
+  #preview-selected-image, img[src^="/static/uploads/"] {
+      max-width: 100%;
+      height: auto;
+      display: block;
+  }
+
+  /* Show the upload button when file is selected */
+  #fileInput:valid + .preview .file-input-label #uploadBtn {
+      display: inline-block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+  }
+
+</style>
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h5 class="my-3">{{ username }}</h5>
+                        <div class="d-flex justify-content-center mb-2">
+                            <a href="/registerface" class="btn btn-primary">Register Face Login</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-white border-0">
+                    <div class="card-body">
+                    </div>
+                </div>
+                <div class="card bg-white border-0">
+                    <div class="card-body text-center">
+                      <div class="row mt-3">
+                        <div class="col-sm-12 text-center">
+                          <form id="ProfilePictureForm" method="POST" enctype="multipart/form-data">
+                              {{ form.csrf_token }}
+                              <div class="image-preview-container">
+                                <div class="preview">
+                                    <label for="fileInput" class="file-input-label">
+                                        <div class="image-container">
+                                            {% if picstatus %}
+                                            <img src="{{ url_for('static', filename='uploads/' + account['profile_picture']) }}" alt="">
+                                            {% endif %}
+                                            <img id="preview-selected-image"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-2" id="uploadBtn">Upload</button>
+                                    </label>
+                                    {{ form.profile_picture(placeholder='Profile Picture', id='fileInput', onchange="previewImage(event)") }}
+                                </div>
+                            </div>
+                              {% if form.profile_picture.errors %}
+                              <div class="alert alert-danger mt-2">
+                                  {{ form.profile_picture.errors[0] }}
+                              </div>
+                              {% endif %}
+                          </form>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+              <script>
+                const fileInput = document.getElementById('fileInput');
+                const uploadBtn = document.getElementById('uploadBtn');
+                const previewImage = document.getElementById('preview-selected-image');
+                const previewContainer = document.querySelector('.preview');
+            
+                fileInput.addEventListener('change', (event) => {
+                    uploadBtn.style.display = 'inline-block';
+                    previewContainer.innerHTML = ''; // Clear the existing preview
+                    const image = document.createElement('img');
+                    image.id = 'preview-selected-image';
+                    image.style.display = 'block';
+                    previewContainer.appendChild(image);
+                    readURL(event.target);
+                });
+            
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            previewImage.src = e.target.result;
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            </script>
+ 
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="mb-0">You can change the user settings here.</p>
+                        <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">First name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['first_name']}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Last name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['last_name']}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Password</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">********</p>
+                  <a href="/resetpw" class="btn btn-primary">Edit</a>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['email']}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Phone</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['phone_no']}}</p>
+                </div>
+ 
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Address</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['address']}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Credit Card</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{tempcredit}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Credit Card 2</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['credit_card2']}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Birthday</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['birthday']}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Gender</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{account['gender']}}</p>
+                </div>
+              </div>
+                </div> 
+                <a href="/editprofile" class="btn btn-primary">Edit</a>
+              </div>
+              <div>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-success" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login V4</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        form i{
+            cursor: pointer;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="http://127.0.0.1:5000/static/Tesmond/images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/css/util.css">
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+<!-- Validation without submit -->
+<style>
+    .error
+    {
+    color:red;
+    font-family:verdana, Helvetica;
+    }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/js/validation.js"></script>
+<!-- End of Validation without submit -->
+
+<div class="limiter">
+    <div class="container-login100"
+         style="background-image: url('http://127.0.0.1:5000/static/Tesmond/images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form class="login100-form validate-form" action="#" method="post" id="resetpw">
+                {{ form.csrf_token }}
+                <span class="login100-form-title p-b-49">
+                    Reset Password
+                </span>
+                <div class="wrap-input100 validate-input m-b-23">
+                    <span class="label-input100">New Password</span>
+                    <i class="bi bi-eye-slash" id="togglePassword"></i> 
+                    {{ form.newpw(placeholder='New Password', type='password', class='input100', id='newpw') }}
+                    <span class="focus-input100" data-symbol="&#xf190;"></span>
+                </div>
+                {% for error in form.newpw.errors %}
+                <div style="color: red;margin-left: 10px;">{{ error }}</div>
+                {% endfor %}
+                <div class="wrap-input100 validate-input m-b-23">
+                    <span class="label-input100">Confirm Password</span>
+                    <i class="bi bi-eye-slash" id="togglePassword2"></i> 
+                    {{ form.cfmpw(placeholder='Confirmation Password', type='password', class='input100', id='cfmpw') }}
+                    <span class="focus-input100" data-symbol="&#xf191;"></span>
+                </div>
+                {% for error in form.cfmpw.errors %}
+                <div style="color: red;margin-left: 10px;">{{ error }}</div>
+                {% endfor %}
+
+                <div>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="flex-col-c p-t-15">
+                    <div class="content-input-field">
+                        {{ form.recaptcha }}
+                        {% for error in form.recaptcha.errors %}
+                        <span style="color: red;margin-left: 10px;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="text-right p-t-8 p-b-15"></div>
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button type="submit" class="login100-form-btn">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+
+                <div id="dropDownSelect1"></div>
+                <script>
+                    const togglePassword = document.querySelector("#togglePassword");
+                    const togglePassword2 = document.querySelector("#togglePassword2");
+                    const password = document.querySelector("#newpw");
+                    const password2 = document.querySelector("#cfmpw");
+                
+                    togglePassword.addEventListener("click", function () {
+                        // toggle the type attribute
+                        const type = password.getAttribute("type") === "password" ? "text" : "password";
+                        password.setAttribute("type", type);
+                        
+                        // toggle the icon
+                        this.classList.toggle("bi-eye");
+                    });
+                    togglePassword2.addEventListener("click", function () {
+                        // toggle the type attribute
+                        const type = password2.getAttribute("type") === "password" ? "text" : "password";
+                        password2.setAttribute("type", type);
+                        
+                        // toggle the icon
+                        this.classList.toggle("bi-eye");
+                    });
+
+                </script>
+                
+                <!--===============================================================================================-->
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/animsition/js/animsition.min.js"></script>
+                <!--===============================================================================================-->
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/bootstrap/js/popper.js"></script>
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/bootstrap/js/bootstrap.min.js"></script>
+                <!--===============================================================================================-->
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/select2/select2.min.js"></script>
+                <!--===============================================================================================-->
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/daterangepicker/moment.min.js"></script>
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/daterangepicker/daterangepicker.js"></script>
+                <!--===============================================================================================-->
+                <script src="http://127.0.0.1:5000/static/Tesmond/vendor/countdowntime/countdowntime.js"></script>
+                <!--===============================================================================================-->
+
+</body>
+</html>

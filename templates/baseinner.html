@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap 5.1.3 CSS -->
+    <script>
+        addEventListener("load", function() {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <link rel="stylesheet" href="http://127.0.0.1:5000/static/customer/css/bootstrap.css">
+    <link rel="stylesheet" href="http://127.0.0.1:5000/static/customer/css/style.css" type="text/css" media="all"/>
+    <link href="http://127.0.0.1:5000/static/customer/css/font-awesome.css" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Hind:300,400,500,600,700" rel="stylesheet">
+    <link rel="icon" type="image/png" href="http://127.0.0.1:5000/static/Tesmond/images/icons/favicon.ico"/>
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://127.0.0.1:5000/static/Tesmond/vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/css/util.css">
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/static/Tesmond/css/main.css">
+    <script src="http://127.0.0.1:5000/static/customer/preview.js"></script>
+</head>
+<body>
+{% block navbar %}
+{% if 'loggedin' in session %}
+    {% include 'includes/innernavuser.html' %}
+{% else %}
+    {% include 'includes/innernav.html' %}
+{% endif %}
+{% endblock %}
+
+<div class="container-fluid">
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% block scripts %}
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/animsition/js/animsition.min.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/bootstrap/js/popper.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/select2/select2.min.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/daterangepicker/moment.min.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/vendor/countdowntime/countdowntime.js"></script>
+<script src="http://127.0.0.1:5000/static/Tesmond/js/main.js"></script>
+{% endblock %}
+</body>
+</html>
